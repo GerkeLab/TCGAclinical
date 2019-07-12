@@ -7,10 +7,42 @@ All data in its original format can be found at
 <https://gdc.cancer.gov/about-data/publications/pancanatlas>. All
 original files had been previously downloaded in June of 2018.
 
-### Survival Data
+### The PanCancer Atlas
 
-Cell paper discussing the updated clinical/survival data can be found at
-: <https://www.cell.com/cell/pdf/S0092-8674(18)30229-0.pdf>
+The original
+[flagship](https://www.sciencedirect.com/science/article/pii/S0092867418303027?via%3Dihub)
+paper (Cell-of-Origin Patterns Dominate the Molecular Classification of
+10,000 Tumors from 33 Types of Cancer by Hoadley et al) represented
+efforts to provide “comprehensive integrative molecular analyses of the
+complete set of tumors in TCGA”. This paper was accompanied by a paper
+from [Liu et
+al](https://www.cell.com/cell/pdf/S0092-8674\(18\)30229-0.pdf) (An
+Integrated TCGA Pan-Cancer Clinical Data Resource to Drive High-Quality
+Survival Outcome Analytics) who attempted to create a standardized
+dataset for the clinical data across the PanCancer Atlas called the TCGA
+Pan-Cancer Clinical Data Resource (TCGA-CDR). This was necessary as the
+original TCGA project consisted of two parts 1) the pilot study which
+focused on GBM, OV, and LUSC and 2) the full project which encompassed
+33 cancer types. Due to the relatively short time frame of establishing
+TCGA (2006-2015) clinical data is often limited and follow-up times are
+short. Furthermore, the data fields available differ by cancer type as
+each type had a Disease Working Group who decided what data to collect.
+
+Thus, the PanCancer Atlas provides two data resources for clinical
+annotations: `clinical_PANCAN_patient_with_followup.tsv` which is
+available under Additional Resources/Supplemental Data and is not
+assocaited with a specific publication and details on it’s creation are
+scarce and `TCGA-CDR-SupplementalTableS1.xlsx` which is described as a
+“curated resource of the clinical annotations for TCGA data and
+provides recommendations for use of clinical endpoints” and comed with
+the recommendation that “this file be used for clinical elements and
+survival outcome data first” and is associated with the Liu et al
+publication.
+
+### Survival Data - Liu et al
+
+Additional details on how the dataset was created can be found in the
+orginial article.
 
 “For clinical outcome endpoints, we recommend the use of **PFI** for
 progression-free interval, and **OS** for overall survival. Both
@@ -20,19 +52,19 @@ Table 3 in the accompanying paper.”
 
 All survival times are measured in days.
 
-A total of 209 patients had updated survival data but not clinical data.
-IDs are available below in the missing data section.
+A total of 209 patients are found in `TCGA-CDR-SupplementalTableS1` but
+not `clinical_PANCAN_patient_with_followup`. IDs are available below in
+the missing data section.
 
 Survival Endpoints:
 
   - OS - overall survival
   - DSS - disease-specific survival  
   - DFI - disease-free interval
-  - PFI - progression-free interval
+  - PFI - progression-free
+interval
 
-For a complete description of all survival endpoint please see the the
-origianl data file
-<span style="color:purple">TCGA-CDR-SupplementalTableS1</span>.
+<!-- For a complete description of all survival endpoint please see the the origianl data file <span style="color:purple">TCGA-CDR-SupplementalTableS1</span>.  -->
 
 There is a strange occurence for a small subset of patients who have
 secondary endpoints which occurr after their overall survival endpoint
@@ -41,7 +73,9 @@ NA, TCGA-15-1444, TCGA-BR-8380, TCGA-EO-A3AY. Patients with later PFI:
 NA, TCGA-UY-A9PE, TCGA-OL-A97C, TCGA-15-1444, TCGA-CW-6090,
 TCGA-HW-7491, TCGA-BW-A5NP, TCGA-20-0990, TCGA-BF-A1PU, TCGA-DA-A1HW,
 TCGA-BR-8380, TCGA-EO-A3AY. These numbers correspond with the data in
-cBioportal, so it is not specific to this dataset.
+cBioportal, so it is not specific to this dataset. These and a handful
+of other inconsistencies that have been noted are explained in further
+detail in the original paper.
 
 Supplemental Endpoints:
 
@@ -58,13 +92,61 @@ Competing Risks Endpoints:
   - PFI.1.cr - progression-free interval (PFI.1) with competing risks
   - PFI.2.cr - progression-free interval (PFI.2) with competing risks
 
-There are now two copies of vital\_status, residual\_tumor, and
-margin\_status. The version from
-<span style="color:purple">clinical\_PANCAN\_patient\_with\_followup</span>
-is labeled as such while the “updated” version from
-<span style="color:purple">TCGA-CDR-SupplementalTableS1</span> (Liu et
-al) is labeled as liu\_vital\_status, liu\_residual\_tumor, and
-liu\_margin\_status.
+For a complete description of all survival endpoint please see the the
+origianl data file `TCGA-CDR-SupplementalTableS1`.
+
+There are now two copies of `vital_status`, `residual_tumor`, and
+`margin_status`. The version from
+`clinical_PANCAN_patient_with_followup` is labeled as such while the
+“updated” version from `TCGA-CDR-SupplementalTableS1` (Liu et al) is
+labeled as `liu_vital_status`, `liu_residual_tumor`, and
+`liu_margin_status`.
+
+## Differences within the data
+
+There were 10956 unique patint barcodes in
+`clinical_PANCAN_patient_with_followup` and 11160 unique patient
+barcodes from `TCGA-CDR-SupplementalTableS1`, 10951 of which overlap,
+which may account for some missingness after the two were merged, as all
+patients from wither set were retained. Individual barcodes for those
+missing in each dataset can be found below.
+
+Using `vital_status` there are 7468 patients alive and 3483 who have
+deceased; using `liu_vital_status` there are 7528 patients alive and
+3627 deceased; using `OS` there are 7529 alive (0) and 3622 deceased
+(1).
+
+# cBioPortal
+
+PanCancer Atlas data is also available for download at
+[cBioPortal](https://www.cbioportal.org/) and
+[github](https://github.com/cBioPortal/datahub/tree/master/public),
+however the data has been split into individual cancer types. The
+cBioPortl page points users back to the PanCancer Publications page, and
+the combined PanCancer Atlas data has data available for 33 cancer types
+(including LAML) and 10,953 pateints over 10,967 samples.
+
+When using cBioPortal, to access the full PanCancer data use the
+[combined
+types](https://www.cbioportal.org/study/summary?id=laml_tcga_pan_can_atlas_2018%2Cacc_tcga_pan_can_atlas_2018%2Cblca_tcga_pan_can_atlas_2018%2Clgg_tcga_pan_can_atlas_2018%2Cbrca_tcga_pan_can_atlas_2018%2Ccesc_tcga_pan_can_atlas_2018%2Cchol_tcga_pan_can_atlas_2018%2Ccoadread_tcga_pan_can_atlas_2018%2Cdlbc_tcga_pan_can_atlas_2018%2Cesca_tcga_pan_can_atlas_2018%2Cgbm_tcga_pan_can_atlas_2018%2Chnsc_tcga_pan_can_atlas_2018%2Ckich_tcga_pan_can_atlas_2018%2Ckirc_tcga_pan_can_atlas_2018%2Ckirp_tcga_pan_can_atlas_2018%2Clihc_tcga_pan_can_atlas_2018%2Cluad_tcga_pan_can_atlas_2018%2Clusc_tcga_pan_can_atlas_2018%2Cmeso_tcga_pan_can_atlas_2018%2Cov_tcga_pan_can_atlas_2018%2Cpaad_tcga_pan_can_atlas_2018%2Cpcpg_tcga_pan_can_atlas_2018%2Cprad_tcga_pan_can_atlas_2018%2Csarc_tcga_pan_can_atlas_2018%2Cskcm_tcga_pan_can_atlas_2018%2Cstad_tcga_pan_can_atlas_2018%2Ctgct_tcga_pan_can_atlas_2018%2Cthym_tcga_pan_can_atlas_2018%2Cthca_tcga_pan_can_atlas_2018%2Cucs_tcga_pan_can_atlas_2018%2Cucec_tcga_pan_can_atlas_2018%2Cuvm_tcga_pan_can_atlas_2018).
+
+When looking at cBioPortal vs PanCancer Atlas data one thing to keep in
+mind is that cBioPortal reports times to events in terms of months but
+doesn’t use 30.5 days in a month but instead something closer to 30.4
+days in a month. Below are the overall survival time (in months) for the
+full PanCancer cohort so you cna see the minor differences.
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+    ##    0.00   12.46   23.34   34.03   44.85  368.92      65
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+    ##    0.00   12.49   23.41   34.12   44.97  369.92      65
+
+There are also differences in completeness of the data between the two.
+For example, looking within the prostate cancer cases (PRAD) at the
+variable tumor type (`Tumor Type` in cBioPortal and `tumor_type` in
+PanCancer), there are 479 cases of acinar type and 15 of other type in
+cBioPortal’s data but is completely missing in PanCancer.
 
 ### Missing Data
 
